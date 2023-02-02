@@ -1,14 +1,20 @@
 package com.example.assemblyvoting.model.DTO;
 
+import com.example.assemblyvoting.model.Opcao;
 import com.example.assemblyvoting.model.Voto;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Setter
 @Getter
 public class VotoDTO {
+
+    @NonNull
     Long usuarioId;
+    @NonNull
     Long pautaId;
+    @NonNull
+    Opcao opcao;
 }
