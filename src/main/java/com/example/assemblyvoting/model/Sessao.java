@@ -1,21 +1,27 @@
 package com.example.assemblyvoting.model;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class Sessao {
-    @NonNull
+    @JsonProperty("id_pauta")
     Long pautaId;
 
     @NonNull
+    @JsonProperty("horario_inicio")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     LocalDateTime horarioInicio;
 
+    @JsonProperty("horario_fim")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     LocalDateTime horarioTermino;
 }

@@ -23,16 +23,12 @@ public class PautaServiceImpl implements PautaService {
     @Override
     public Mono<Pauta> iniciaSessao(Sessao sessao) {
         if (sessao.getHorarioTermino() == null) {
-            sessao.setHorarioInicio(sessao.getHorarioInicio().plusMinutes(1));
+            sessao.setHorarioTermino(sessao.getHorarioInicio().plusMinutes(1));
         }
-        return pautaRepository.existsById(sessao.getPautaId()).flatMap(exists -> {
-            if (exists) {
-                return pautaRepository
-                        .save(Pauta.builder()
-                                .id(sessao.getPautaId())
-                                .horarioInicio(sessao.getHorarioInicio()).horarioTermino(sessao.getHorarioTermino()).build());
-            }
-            return Mono.empty();
+        return pautaRepository.findById(sessao.getPautaId()).flatMap(pauta -> {
+            pauta.setHorarioInicio(sessao.getHorarioInicio());
+            pauta.setHorarioTermino(sessao.getHorarioTermino());
+            return pautaRepository.save(pauta);
         });
     }
 

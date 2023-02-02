@@ -28,7 +28,7 @@ public class PautaHandler {
 
     public Mono<ServerResponse> iniciaSessao(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(Sessao.class).flatMap(sessao ->
-                pautaService.iniciaSessao(sessao).flatMap(pauta -> ok().contentType(MediaType.APPLICATION_JSON).body(pauta, Pauta.class)));
+                pautaService.iniciaSessao(sessao).flatMap(pauta -> ok().contentType(MediaType.APPLICATION_JSON).bodyValue(pauta)));
     }
 
     public Mono<ServerResponse> getPautas(ServerRequest serverRequest) {

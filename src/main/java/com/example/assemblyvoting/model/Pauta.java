@@ -20,7 +20,6 @@ public class Pauta {
     Long id;
 
     @Column("name_pauta")
-    @NonNull
     String nomePauta;
     @Column("descricao")
     String descricao;
