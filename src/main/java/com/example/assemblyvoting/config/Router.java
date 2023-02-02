@@ -1,0 +1,31 @@
+package com.example.assemblyvoting.config;
+
+import com.example.assemblyvoting.handler.router.HandlerRouter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.reactive.function.server.RouterFunction;
+import org.springframework.web.reactive.function.server.ServerResponse;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.springframework.web.reactive.function.server.RouterFunctions.route;
+
+@Configuration
+
+public class Router {
+
+    private final List<HandlerRouter> routers;
+
+    public Router(HandlerRouter... handlerRouters) {
+        routers = Arrays.asList(handlerRouters);
+    }
+
+    @Bean
+    public RouterFunction<ServerResponse> routes() {
+        var routes = route();
+        routers.forEach(handler ->
+                routes.add(handler.getRoutes()));
+        return routes.build();
+    }
+}
