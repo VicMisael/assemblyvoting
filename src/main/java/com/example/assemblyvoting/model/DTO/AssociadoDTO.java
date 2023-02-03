@@ -16,7 +16,6 @@ public class AssociadoDTO {
     String nome;
 
     public Associado toAssociado() {
-        System.out.println(nome);
         return Associado.builder().nome(nome).memberSince(LocalDateTime.now()).build();
     }
 }

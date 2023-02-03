@@ -3,25 +3,25 @@ package com.example.assemblyvoting.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class Sessao {
-    @JsonProperty("id_pauta")
+    @JsonProperty("pautaId")
     Long pautaId;
 
     @NonNull
-    @JsonProperty("horario_inicio")
+    @JsonProperty("horarioInicio")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
     LocalDateTime horarioInicio;
 
-    @JsonProperty("horario_fim")
+    @JsonProperty("horarioFim")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
-    LocalDateTime horarioTermino;
+    @Nullable
+    LocalDateTime horarioFim;
 }

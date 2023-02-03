@@ -2,7 +2,6 @@ package com.example.assemblyvoting.service;
 
 import com.example.assemblyvoting.model.Associado;
 import com.example.assemblyvoting.repository.AssociadoRepository;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -27,6 +26,11 @@ public class AssociadoServiceImpl implements AssociadoService {
     @Override
     public Mono<Associado> getAssociadoById(Long id) {
         return associadoRepository.findById(id);
+    }
+
+    @Override
+    public Mono<Boolean> existsById(Long id){
+        return associadoRepository.existsById(id);
     }
 
 }

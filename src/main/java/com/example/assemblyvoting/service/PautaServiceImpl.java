@@ -1,14 +1,15 @@
 package com.example.assemblyvoting.service;
 
+import com.example.assemblyvoting.exception.HorarioDeSessaoInvalidoException;
+import com.example.assemblyvoting.model.Opcao;
 import com.example.assemblyvoting.model.Pauta;
 import com.example.assemblyvoting.model.Sessao;
+import com.example.assemblyvoting.model.Votacao;
 import com.example.assemblyvoting.repository.PautaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +23,14 @@ public class PautaServiceImpl implements PautaService {
 
     @Override
     public Mono<Pauta> iniciaSessao(Sessao sessao) {
-        if (sessao.getHorarioTermino() == null) {
-            sessao.setHorarioTermino(sessao.getHorarioInicio().plusMinutes(1));
+        if (sessao.getHorarioFim() == null) {
+            sessao.setHorarioFim(sessao.getHorarioInicio().plusMinutes(1));
+        } else if (sessao.getHorarioFim().isBefore(sessao.getHorarioInicio())) {
+            return Mono.error(new HorarioDeSessaoInvalidoException());
         }
         return pautaRepository.findById(sessao.getPautaId()).flatMap(pauta -> {
             pauta.setHorarioInicio(sessao.getHorarioInicio());
-            pauta.setHorarioTermino(sessao.getHorarioTermino());
+            pauta.setHorarioTermino(sessao.getHorarioFim());
             return pautaRepository.save(pauta);
         });
     }
@@ -41,4 +44,21 @@ public class PautaServiceImpl implements PautaService {
     public Mono<Pauta> getPautaById(Long id) {
         return pautaRepository.findById(id);
     }
+
+    @Override
+    public Mono<Boolean> existsById(Long pautaID) {
+        return pautaRepository.existsById(pautaID);
+    }
+
+    @Override
+    public Mono<Votacao> getResultadoVotacao(Long pautaId) {
+        return Mono.zip(getPautaById(pautaId), pautaRepository.getVotacaoByPauta(pautaId))
+                .map(tuple -> Votacao.builder()
+                        .pauta(tuple.getT1())
+                        .votosSim(tuple.getT2().get(Opcao.SIM))
+                        .votosNao(tuple.getT2().get(Opcao.NAO))
+                        .build());
+    }
+
+
 }

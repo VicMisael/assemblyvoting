@@ -4,8 +4,6 @@ import com.example.assemblyvoting.model.Pauta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import java.time.LocalDateTime;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -13,7 +11,7 @@ import java.time.LocalDateTime;
 @Getter
 public class PautaDTO {
     @NonNull
-    @JsonProperty("nome_pauta")
+    @JsonProperty("nomePauta")
     String nomePauta;
     @NonNull
     @JsonProperty("descricao")

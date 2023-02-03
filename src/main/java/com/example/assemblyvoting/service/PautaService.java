@@ -2,21 +2,22 @@ package com.example.assemblyvoting.service;
 
 import com.example.assemblyvoting.model.Pauta;
 import com.example.assemblyvoting.model.Sessao;
+import com.example.assemblyvoting.model.Votacao;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
-
 @Service
 public interface PautaService {
+     Mono<Pauta> insertPauta(Pauta pauta);
 
+     Mono<Pauta> iniciaSessao(Sessao sessao);
 
-    public Mono<Pauta> insertPauta(Pauta pauta);
+     Flux<Pauta> getLatestPautas();
 
-    public Mono<Pauta> iniciaSessao(Sessao sessao);
+     Mono<Pauta> getPautaById(Long id);
 
-    public Flux<Pauta> getLatestPautas();
+     Mono<Boolean> existsById(Long pautaID);
 
-    public Mono<Pauta> getPautaById(Long id);
+     Mono<Votacao> getResultadoVotacao(Long pautaId);
 }
