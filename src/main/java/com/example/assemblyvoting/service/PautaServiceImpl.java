@@ -58,8 +58,9 @@ public class PautaServiceImpl implements PautaService {
         return Mono.zip(getPautaById(pautaId), pautaRepository.getVotacaoByPauta(pautaId))
                 .map(tuple -> Votacao.builder()
                         .pauta(tuple.getT1())
-                        .votosSim(tuple.getT2().get(Opcao.SIM))
-                        .votosNao(tuple.getT2().get(Opcao.NAO))
+                        .votosSim(Objects.requireNonNullElse(tuple.getT2().get(Opcao.SIM), 0))
+                        .votosNao(Objects.requireNonNullElse(tuple.getT2().get(Opcao.NAO), 0))
+                        .estadoSessao(EstadoUtils.checkEstadoSessao(tuple.getT1().getHorarioInicio(), tuple.getT1().getHorarioTermino()))
                         .build());
     }
 
