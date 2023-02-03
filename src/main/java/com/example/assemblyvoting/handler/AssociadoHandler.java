@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 
-import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.*;
 
 @Component
@@ -37,7 +36,8 @@ public class AssociadoHandler {
 
     public Mono<ServerResponse> getAssociadoById(ServerRequest serverRequest) {
         return associadoService.getAssociadoById(Long.valueOf(serverRequest.pathVariable("id")))
-                .flatMap(body -> ok().contentType(MediaType.APPLICATION_JSON).bodyValue(body))
+                .flatMap(body ->
+                        ok().contentType(MediaType.APPLICATION_JSON).bodyValue(body))
                 .switchIfEmpty(notFound().build());
 
 

@@ -16,7 +16,7 @@ public class AssociadoHandlerRouter implements HandlerRouter {
     @Override
     public RouterFunction<ServerResponse> getRoutes() {
         return route().path("/associado", builder -> builder
-                .GET("/{id}",associadoHandler::getAssociadoById)
+                .GET("/{id}", associadoHandler::getAssociadoById)
                 .GET(associadoHandler::getAssociados)
                 .POST(associadoHandler::insertAssociado)).build();
     }

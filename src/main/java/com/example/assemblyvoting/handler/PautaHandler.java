@@ -1,6 +1,5 @@
 package com.example.assemblyvoting.handler;
 
-import com.example.assemblyvoting.model.Associado;
 import com.example.assemblyvoting.model.DTO.PautaDTO;
 import com.example.assemblyvoting.model.Pauta;
 import com.example.assemblyvoting.model.Sessao;
@@ -36,13 +35,18 @@ public class PautaHandler {
         return ok().contentType(MediaType.APPLICATION_JSON).body(pautas, Pauta.class);
     }
 
-    public Mono<ServerResponse> getPauta(ServerRequest serverRequest) {
+    public Mono<ServerResponse> getPautaById(ServerRequest serverRequest) {
         Long id = Long.valueOf(serverRequest.pathVariable("id"));
         return pautaService.getPautaById(id)
-                .flatMap(pauta -> ok().contentType(MediaType.APPLICATION_JSON).body(pauta, Pauta.class))
+                .flatMap(pauta -> ok().contentType(MediaType.APPLICATION_JSON).bodyValue(pauta))
                 .switchIfEmpty(
                         notFound().build()
                 );
+    }
+
+    public Mono<ServerResponse> getVotacaoByPautaId(ServerRequest serverRequest) {
+        Long id = Long.valueOf(serverRequest.pathVariable("id"));
+        return pautaService.getResultadoVotacao(id).flatMap(votacao -> ok().bodyValue(votacao)).switchIfEmpty(notFound().build());
     }
 
 

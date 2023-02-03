@@ -17,8 +17,9 @@ public class PautaHandlerRouter implements HandlerRouter {
     @Override
     public RouterFunction<ServerResponse> getRoutes() {
         return route().path("/pauta", builder -> builder
+                .GET("/resultado/{id}", pautaHandler::getVotacaoByPautaId)
+                .GET("/{id}", pautaHandler::getPautaById)
                 .GET(pautaHandler::getPautas)
-                .GET("/{id}", pautaHandler::getPauta)
                 .POST("/sessao", pautaHandler::iniciaSessao)
                 .POST(pautaHandler::insertPauta)
         ).build();
