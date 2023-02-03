@@ -6,10 +6,13 @@ import com.example.assemblyvoting.model.Pauta;
 import com.example.assemblyvoting.model.Sessao;
 import com.example.assemblyvoting.model.Votacao;
 import com.example.assemblyvoting.repository.PautaRepository;
+import com.example.assemblyvoting.util.EstadoUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +39,7 @@ public class PautaServiceImpl implements PautaService {
     }
 
     @Override
-    public Flux<Pauta> getLatestPautas() {
+    public Flux<Pauta> getPautas() {
         return pautaRepository.findAll();
     }
 
@@ -46,8 +49,8 @@ public class PautaServiceImpl implements PautaService {
     }
 
     @Override
-    public Mono<Boolean> existsById(Long pautaID) {
-        return pautaRepository.existsById(pautaID);
+    public Mono<Boolean> existsById(Long pautaId) {
+        return pautaRepository.existsById(pautaId);
     }
 
     @Override
