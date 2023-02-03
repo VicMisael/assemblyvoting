@@ -1,6 +1,7 @@
 package com.example.assemblyvoting.config;
 
 import com.example.assemblyvoting.handler.router.HandlerRouter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
@@ -12,9 +13,8 @@ import java.util.List;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 
 @Configuration
-
+@Slf4j
 public class Router {
-
     private final List<HandlerRouter> routers;
 
     public Router(HandlerRouter... handlerRouters) {
@@ -24,8 +24,10 @@ public class Router {
     @Bean
     public RouterFunction<ServerResponse> routes() {
         var routes = route();
-        routers.forEach(handler ->
-                routes.add(handler.getRoutes()));
+        routers.forEach(handler -> {
+            log.info("Registering handler " + handler.getClass().getName());
+            routes.add(handler.getRoutes());
+        });
         return routes.build();
     }
 }
