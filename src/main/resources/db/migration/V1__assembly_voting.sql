@@ -23,10 +23,11 @@ create schema assembly_voting
     create table votos
     (
         voto_id      SERIAL,
-        associado_id integer NOT NULL,
-        pauta_id     integer NOT NULL,
-        opcao        integer NOT NULL,
+        associado_id integer    NOT NULL,
+        pauta_id     integer    NOT NULL,
+        opcao        varchar(3) NOT NULL,
         constraint voto_pk PRIMARY KEY (voto_id),
         constraint associado_fk FOREIGN KEY (associado_id) references associados (associado_id),
-        constraint pauta_fk FOREIGN KEY (pauta_id) references pautas (pauta_id)
+        constraint pauta_fk FOREIGN KEY (pauta_id) references pautas (pauta_id),
+        constraint associado_pauta_uk UNIQUE (associado_id, pauta_id)
     )
