@@ -31,7 +31,7 @@ public class PautaHandler {
     }
 
     public Mono<ServerResponse> getPautas(ServerRequest serverRequest) {
-        var pautas = pautaService.getLatestPautas();
+        var pautas = pautaService.getPautas();
         return ok().contentType(MediaType.APPLICATION_JSON).body(pautas, Pauta.class);
     }
 
