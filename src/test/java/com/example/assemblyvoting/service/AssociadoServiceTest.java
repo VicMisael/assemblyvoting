@@ -5,17 +5,24 @@ import com.example.assemblyvoting.model.DTO.AssociadoDTO;
 import com.example.assemblyvoting.repository.AssociadoRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
+@ExtendWith(SpringExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ContextConfiguration
 class AssociadoServiceTest {
 
-    @MockBean
+    @Mock
     AssociadoRepository associadoRepository;
 
     @InjectMocks
@@ -43,4 +50,12 @@ class AssociadoServiceTest {
         }).verifyComplete();
     }
 
+
+    @Test
+    void existsById() {
+        Mockito.when(associadoService.existsById(1L)).thenReturn(Mono.just(true));
+        StepVerifier.create(associadoRepository.existsById(1L)).consumeNextWith(bool -> {
+            assertEquals("should be true", bool, true);
+        }).verifyComplete();
+    }
 }
