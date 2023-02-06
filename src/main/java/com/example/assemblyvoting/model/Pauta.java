@@ -1,5 +1,6 @@
 package com.example.assemblyvoting.model;
 
+import io.r2dbc.spi.Row;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +29,16 @@ public class Pauta {
 
     @Column("horario_fim")
     LocalDateTime horarioTermino;
+
+    public static Pauta fromRow(Row row) {
+        return Pauta.builder()
+                .id(row.get("pauta_id", Long.class))
+                .nomePauta(row.get("name_pauta", String.class))
+                .descricao(row.get("descricao", String.class))
+                .horarioInicio(row.get("horario_inicio", LocalDateTime.class))
+                .horarioTermino(row.get("horario_fim", LocalDateTime.class)
+                ).build();
+    }
 
 
 }
