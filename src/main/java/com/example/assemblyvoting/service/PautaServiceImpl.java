@@ -26,9 +26,7 @@ public class PautaServiceImpl implements PautaService {
 
     @Override
     public Mono<Pauta> iniciaSessao(Sessao sessao) {
-        if (sessao.getHorarioFim() == null) {
-            sessao.setHorarioFim(sessao.getHorarioInicio().plusMinutes(1));
-        } else if (sessao.getHorarioFim().isBefore(sessao.getHorarioInicio())) {
+        if (sessao.getHorarioFim().isBefore(sessao.getHorarioInicio())) {
             return Mono.error(new HorarioDeSessaoInvalidoException());
         }
         return pautaRepository.findById(sessao.getPautaId()).flatMap(pauta -> {

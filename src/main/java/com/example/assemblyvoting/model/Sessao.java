@@ -7,11 +7,26 @@ import org.springframework.lang.Nullable;
 
 import java.time.LocalDateTime;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Sessao {
+
+
+    public Sessao(final Long pautaId, final LocalDateTime horarioInicio, @Nullable LocalDateTime horarioFim) {
+        if (horarioInicio == null) {
+            throw new NullPointerException("horarioInicio is marked non-null but is null");
+        } else {
+            if (horarioFim == null) {
+                horarioFim = horarioInicio.plusMinutes(1);
+            }
+            this.pautaId = pautaId;
+            this.horarioInicio = horarioInicio;
+            this.horarioFim = horarioFim;
+        }
+    }
+
     @JsonProperty("pautaId")
     Long pautaId;
 
@@ -22,6 +37,6 @@ public class Sessao {
 
     @JsonProperty("horarioFim")
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm")
-    @Nullable
+    @NonNull
     LocalDateTime horarioFim;
 }
