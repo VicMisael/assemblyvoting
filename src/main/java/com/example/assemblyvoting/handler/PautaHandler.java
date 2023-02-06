@@ -1,5 +1,6 @@
 package com.example.assemblyvoting.handler;
 
+import com.example.assemblyvoting.exception.PautaInexistenteException;
 import com.example.assemblyvoting.model.DTO.PautaDTO;
 import com.example.assemblyvoting.model.Pauta;
 import com.example.assemblyvoting.model.Sessao;
@@ -27,7 +28,7 @@ public class PautaHandler {
 
     public Mono<ServerResponse> iniciaSessao(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(Sessao.class).flatMap(sessao ->
-                pautaService.iniciaSessao(sessao).flatMap(pauta -> ok().contentType(MediaType.APPLICATION_JSON).bodyValue(pauta)));
+                pautaService.iniciaSessao(sessao).flatMap(pauta -> ok().contentType(MediaType.APPLICATION_JSON).bodyValue(pauta))).switchIfEmpty(Mono.error(PautaInexistenteException::new));
     }
 
     public Mono<ServerResponse> getPautas(ServerRequest serverRequest) {
