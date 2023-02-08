@@ -2,6 +2,7 @@ package com.example.assemblyvoting.handler.router;
 
 import com.example.assemblyvoting.handler.VotoHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -10,13 +11,10 @@ import static org.springframework.web.reactive.function.server.RouterFunctions.r
 
 @RequiredArgsConstructor
 @Component
-public class VotoHandlerRouter implements HandlerRouter {
+public class VotoHandlerRouter {
 
-    private final VotoHandler votoHandler;
-
-
-    @Override
-    public RouterFunction<ServerResponse> getRoutes() {
+    @Bean
+    public RouterFunction<ServerResponse> votoRoutes(final VotoHandler votoHandler) {
         return route().path("/voto", builder -> builder
                 .POST(votoHandler::registrarVoto)
         ).build();
