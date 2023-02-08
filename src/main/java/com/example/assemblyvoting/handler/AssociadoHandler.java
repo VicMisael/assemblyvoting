@@ -23,6 +23,7 @@ public class AssociadoHandler {
     private final AssociadoService associadoService;
 
     public Mono<ServerResponse> insertAssociado(ServerRequest serverRequest) {
+        log.debug("AssociadoHandler.insertAssociado");
         return serverRequest.bodyToMono(AssociadoDTO.class)
                 .flatMap(associadoDTO -> associadoService.insertAssociado(associadoDTO.toAssociado())
                         .flatMap(associado -> created(URI.create("/associado/" + associado.getAssociadoId()))
@@ -30,13 +31,16 @@ public class AssociadoHandler {
     }
 
     public Mono<ServerResponse> getAssociados(ServerRequest serverRequest) {
+        log.debug("AssociadoHandler.getAssociados");
         return ok().contentType(MediaType.APPLICATION_JSON).body(associadoService.getAssociados(), Associado.class);
     }
 
     public Mono<ServerResponse> getAssociadoById(ServerRequest serverRequest) {
-        return associadoService.getAssociadoById(Long.valueOf(serverRequest.pathVariable("id")))
-                .flatMap(body ->
-                        ok().contentType(MediaType.APPLICATION_JSON).bodyValue(body))
-                .switchIfEmpty(notFound().build());
+        log.debug("AssociadoHandler.getAssociadoById");
+        return Mono.just(Long.valueOf(serverRequest.pathVariable("id"))).flatMap(id -> associadoService.getAssociadoById(Long.valueOf(serverRequest.pathVariable("id")))
+                        .flatMap(body ->
+                                ok().contentType(MediaType.APPLICATION_JSON).bodyValue(body))
+                        .switchIfEmpty(notFound().build()))
+                .onErrorMap(NumberFormatException.class, e -> e);
     }
 }

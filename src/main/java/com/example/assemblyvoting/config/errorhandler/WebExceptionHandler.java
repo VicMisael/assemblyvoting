@@ -4,6 +4,7 @@ import com.example.assemblyvoting.exception.HttpException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.autoconfigure.web.reactive.error.AbstractErrorWebExceptionHandler;
 import org.springframework.boot.web.reactive.error.ErrorAttributes;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 @Component
 @Order(-2)
+@Slf4j
 public class WebExceptionHandler extends AbstractErrorWebExceptionHandler {
 
     public WebExceptionHandler(ErrorAttributes errorAttributes, ApplicationContext applicationContext, ServerCodecConfigurer serverCodecConfigurer) {
@@ -46,8 +48,10 @@ public class WebExceptionHandler extends AbstractErrorWebExceptionHandler {
                             .message(castError.getMessage())
                             .build());
         } else if (error instanceof RuntimeException) {
+            log.error("Runtime Exception: " + error.getMessage());
+            error.printStackTrace();
             return ServerResponse.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON)
-                    .bodyValue(ErrorResponse.builder().message("Verifique os Dados inseridos")
+                    .bodyValue(ErrorResponse.builder().message("Verifique a requisição ou Tente novamente mais tarde")
                             .httpStatus(HttpStatus.BAD_REQUEST).build());
         }
         return ServerResponse.status(HttpStatus.INTERNAL_SERVER_ERROR).contentType(MediaType.APPLICATION_JSON)

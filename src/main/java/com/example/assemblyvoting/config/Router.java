@@ -25,9 +25,10 @@ public class Router {
     public RouterFunction<ServerResponse> routes() {
         var routes = route();
         routers.forEach(handler -> {
-            log.info("Registering handler " + handler.getClass().getName());
+            log.info("Registering handler router" + handler.getClass().getName());
             routes.add(handler.getRoutes());
         });
+        log.info("Routes registered");
         return routes.build();
     }
 }

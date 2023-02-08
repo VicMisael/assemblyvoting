@@ -20,6 +20,7 @@ public class VotoHandler {
     private final VotoService votoService;
 
     public Mono<ServerResponse> registrarVoto(ServerRequest serverRequest) {
+        log.debug("VotoHandler.registrarVoto");
         return serverRequest.bodyToMono(Voto.class).flatMap(votoService::registrarVoto)
                 .flatMap(votoDTO -> ok().bodyValue(votoDTO))
                 .switchIfEmpty(notFound().build());

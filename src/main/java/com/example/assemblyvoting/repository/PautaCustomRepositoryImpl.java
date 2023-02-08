@@ -5,6 +5,7 @@ import io.r2dbc.spi.Row;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
@@ -14,11 +15,13 @@ import java.util.Objects;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class PautaCustomRepositoryImpl implements PautaCustomRepository {
     private final R2dbcEntityTemplate template;
 
     @Override
     public Mono<Map<Opcao, Integer>> getVotacaoByPauta(Long pautaId) {
+        log.debug("Saving voto");
         final String sql = "select opcao ,COUNT(opcao) from assembly_voting.votos v where v.pauta_id =" + pautaId + " group by v.opcao ";
         return template.getDatabaseClient().sql(sql).map(VotoQuantidade::fromRow).all()
                 .collectMap(VotoQuantidade::getOpcao, VotoQuantidade::getQuantidade);
