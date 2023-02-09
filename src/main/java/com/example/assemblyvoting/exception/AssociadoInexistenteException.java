@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class AssociadoInexistenteException extends ResponseStatusException {
     public AssociadoInexistenteException() {
-        super(HttpStatus.BAD_REQUEST, "Associado inexistente");
+    super(HttpStatus.NOT_FOUND, "Associado inexistente");
     }
 }
