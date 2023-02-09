@@ -5,6 +5,6 @@ import org.springframework.http.HttpStatus;
 public class PautaInexistenteException extends HttpException {
 
     public PautaInexistenteException() {
-        super("Pauta inexistente", HttpStatus.BAD_REQUEST);
+        super("Pauta inexistente", HttpStatus.NOT_FOUND);
     }
 }
