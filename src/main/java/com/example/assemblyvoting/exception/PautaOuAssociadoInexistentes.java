@@ -2,8 +2,8 @@ package com.example.assemblyvoting.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class PautaOuAssociadoInexistentes extends HttpException {
+public class PautaOuAssociadoInexistentes extends ResponseStatusException {
     public PautaOuAssociadoInexistentes() {
-        super("PautaOuAssociadoInexistentes", HttpStatus.BAD_REQUEST);
+        super(HttpStatus.BAD_REQUEST,"PautaOuAssociadoInexistentes");
     }
 }
