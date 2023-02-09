@@ -1,6 +1,5 @@
 package com.example.assemblyvoting.config.errorhandler;
 
-import com.example.assemblyvoting.exception.HttpException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.*;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -39,13 +39,13 @@ public class WebExceptionHandler extends AbstractErrorWebExceptionHandler {
     }
 
     private Mono<ServerResponse> generateErrorResponse(Throwable error) {
-        if (error instanceof HttpException) {
-            final HttpException castError = (HttpException) error;
-            return ServerResponse.status(castError.getHttpStatus())
+        if (error instanceof ResponseStatusException) {
+            final ResponseStatusException castError = (ResponseStatusException) error;
+            return ServerResponse.status(castError.getStatus())
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(ErrorResponse.builder()
-                            .httpStatus(castError.getHttpStatus())
-                            .message(castError.getMessage())
+                            .httpStatus(castError.getStatus())
+                            .message(castError.getReason())
                             .build());
         } else if (error instanceof RuntimeException) {
             log.error("Runtime Exception: " + error.getMessage());

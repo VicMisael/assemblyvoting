@@ -1,9 +1,10 @@
 package com.example.assemblyvoting.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-public class VotacaoNaoIniciadaException extends HttpException {
+public class VotacaoNaoIniciadaException extends ResponseStatusException {
     public VotacaoNaoIniciadaException() {
-        super("Votação não Iniciada", HttpStatus.BAD_REQUEST);
+        super(HttpStatus.BAD_REQUEST, "Votação não Iniciada");
     }
 }
