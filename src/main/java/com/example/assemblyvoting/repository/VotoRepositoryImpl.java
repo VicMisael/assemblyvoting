@@ -1,6 +1,8 @@
 package com.example.assemblyvoting.repository;
 
+import com.example.assemblyvoting.model.Associado;
 import com.example.assemblyvoting.model.DTO.VotoDTO;
+import com.example.assemblyvoting.model.Pauta;
 import com.example.assemblyvoting.model.Voto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +10,8 @@ import org.springframework.data.r2dbc.core.R2dbcEntityTemplate;
 import org.springframework.data.relational.core.query.Query;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import static org.springframework.data.relational.core.query.Criteria.where;
 
@@ -18,6 +22,18 @@ import static org.springframework.data.relational.core.query.Criteria.where;
 public class VotoRepositoryImpl implements VotoRepository {
 
     private final R2dbcEntityTemplate template;
+
+    @Override
+    public Mono<Tuple2<Pauta, Associado>> findPautaAndAssociadoByPautaIdAndAssociadoId(final Voto voto) {
+        final Long pautaId = voto.getPautaId();
+        final Long associadoId = voto.getAssociadoId();
+        final String query = "select * from" +
+                " assembly_voting.pautas p join assembly_voting.associados a on p.pauta_id = " + pautaId + " and a.associado_id = " + associadoId;
+        return template.getDatabaseClient()
+                .sql(query)
+                .map(row -> Tuples.of(Pauta.fromRow(row), Associado.fromRow(row)))
+                .one();
+    }
 
     @Override
     public Mono<VotoDTO> save(Voto voto) {
