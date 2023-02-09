@@ -1,10 +1,11 @@
 package com.example.assemblyvoting.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-public class DesconhecidoException extends HttpException {
+public class DesconhecidoException extends ResponseStatusException {
 
     public DesconhecidoException() {
-        super("Erro desconhecido", HttpStatus.INTERNAL_SERVER_ERROR);
+        super(HttpStatus.INTERNAL_SERVER_ERROR, "Erro desconhecido");
     }
 }

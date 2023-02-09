@@ -1,9 +1,10 @@
 package com.example.assemblyvoting.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
-public class VotoDuplicadoException extends HttpException {
+public class VotoDuplicadoException extends ResponseStatusException {
     public VotoDuplicadoException() {
-        super("Voto Duplicado", HttpStatus.BAD_REQUEST);
+        super(HttpStatus.BAD_REQUEST, "Voto Duplicado");
     }
 }
